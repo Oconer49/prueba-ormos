@@ -1,0 +1,56 @@
+version: '2'
+services:
+  backend:
+    container_name: backend
+    image: yiisoftware/yii2-php:8.2-apache
+    volumes:
+      - ~/.composer-docker/cache:/root/.composer/cache:delegated
+      - ./backend:/app:delegated
+    ports:
+      - '8080:80'
+    networks:
+      - app-network
+  frontend:
+    container_name: frontend
+    image: node:18
+    working_dir: /app
+    volumes:
+      - ./frontend:/app:delegated
+    ports:
+      - '5173:5173'
+    networks:
+      - app-network
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+  database: 
+    container_name: database
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: tienda
+      MYSQL_USER: ormos
+      MYSQL_PASSWORD: ormos
+    ports:
+      - '3306:3306'
+    networks:
+      - app-network
+    volumes:
+      - db_data:/var/lib/mysql
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: database
+      PMA_USER: ormos
+      PMA_PASSWORD: ormos
+    ports:
+      - '8081:80'
+    networks:
+      - app-network
+      
+volumes:
+  db_data:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge  

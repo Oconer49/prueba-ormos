@@ -23,7 +23,7 @@ onMounted(fetchProduct)
         <p class="mb-2"><strong>Referencia:</strong> {{ product.reference }}</p>
         <p class="mb-2"><strong>Stock:</strong> {{ product.stock }}</p>
         <p class="mb-2"><strong>Moneda:</strong> {{ product.currency }}</p>
-        <p class="mb-2"><strong>Precio:</strong> {{ product.price }}</p>
+        <p class="mb-2"><strong>Precio:</strong> {{ product.currency }} {{ product.price }}</p>
       </div>
       <button @click="$router.back()"
         class="w-full mt-4 border border-white text-white px-4 py-2 rounded hover:bg-white hover:text-gray-900 transition flex justify-center items-center space-x-2">
